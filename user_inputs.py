@@ -1,12 +1,13 @@
 import json
+import classes
 
 def running_app():
     while True:
         command: str = input("task-cli ")
         if command in ["add", "добавить"]:
-            TaskTracker.task_id += 1
+            classes.TaskTracker.task_id += 1
             task_value: str = input()
-            task_dict = {str(TaskTracker.task_id): task_value}
+            task_dict = {str(classes.TaskTracker.task_id): task_value}
 
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
@@ -16,7 +17,7 @@ def running_app():
             with open('tasks.json', 'w') as file:
                 json.dump(base_structure, file, indent=2)
 
-            print(f"Task added successfully (ID: {TaskTracker.task_id})")
+            print(f"Task added successfully (ID: {classes.TaskTracker.task_id})")
 
         if command in ["update", "обновить"]:
             with open('tasks.json', 'r') as file:
