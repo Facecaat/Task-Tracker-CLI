@@ -43,7 +43,7 @@ def running_app():
             except TypeError as e:
                 print(e)
 
-        if command in ["delete", "update"]:
+        if command in ["delete", "удалить"]:
             task_id: str = input()
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
