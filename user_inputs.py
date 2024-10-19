@@ -25,11 +25,19 @@ def running_app():
         command = input("task-cli ")
         if command in ["add", "добавить"]:
             TaskTracker.task_id += 1
-            TaskTracker.task = {TaskTracker.task_id: input()}
-            base_structure['NotMarked'].append({TaskTracker.task})
-            with open('tasks.json', 'a') as file:
-                json.dump(base_structure, file)
+            task_value = input()
+            task_dict = {TaskTracker.task_id: task_value}
+
+            with open('tasks.json', 'r') as file:
+                base_structure = json.load(file)
+
+            base_structure['NotMarked'].append(task_dict)
+
+            with open('tasks.json', 'w') as file:
+                json.dump(base_structure, file, indent=2)
+
             print(f"Task added successfully (ID: {TaskTracker.task_id})")
+
         if command in ["update", "обновить"]:
             with open("tasks.json") as file:
                 tasks_data_json = json.load(file)
