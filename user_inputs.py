@@ -16,16 +16,18 @@ class Tasks:
 TaskTracker = Tasks()
 base_structure = {}
 base_structure['NotMarked'] = []
+base_structure['Marked'] = []
+base_structure['Finished'] = []
 with open("tasks.json", 'w') as file:
     json.dump(base_structure, file, indent=2)
 
 
 def running_app():
     while True:
-        command = input("task-cli ")
+        command: str = input("task-cli ")
         if command in ["add", "добавить"]:
             TaskTracker.task_id += 1
-            task_value = input()
+            task_value: str = input()
             task_dict = {str(TaskTracker.task_id): task_value}
 
             with open('tasks.json', 'r') as file:
@@ -45,7 +47,7 @@ def running_app():
             id_and_description = input().split(maxsplit=1)
 
 
-            def get_id(id):
+            def get_id(id: int):
                 if not id.isdigit():
                     raise TypeError("Error: ID should be a digit")
                 return int(id)
