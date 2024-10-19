@@ -1,9 +1,9 @@
 import json
 
 class Tasks:
-
-    tasks = []
-    task_id = 0
+    def __init__(self):
+        self.tasks = []
+        self.task_id = 0
 
     @property
     def task(self):
