@@ -14,22 +14,28 @@ class Tasks:
         self.tasks.append(value)
 
 TaskTracker = Tasks()
-
-#https://stepik.org/lesson/518492/step/1?unit=510940
-#переработать ввод в json-формат и записать его в json-файл
-'''
-with open('tasks.json', 'w') as file:
-    json,dump(command, file)
-'''
+base_structure = {}
+base_structure['NotMarked'] = []
+with open("tasks.json", 'w') as file:
+    json.dump(base_structure, file, indent=2)
 
 
 def running_app():
     while True:
         command = input("task-cli ")
-        if command == "add":
-            TaskTracker.task = input()
+        if command in ["add", "добавить"]:
             TaskTracker.task_id += 1
+            TaskTracker.task = {TaskTracker.task_id: input()}
+            base_structure['NotMarked'].append({TaskTracker.task})
+            with open('tasks.json', 'a') as file:
+                json.dump(base_structure, file)
             print(f"Task added successfully (ID: {TaskTracker.task_id})")
+        if command in ["update", "обновить"]:
+            with open("tasks.json") as file:
+                tasks_data_json = json.load(file)
+                print(tasks_data_json)
+
+
 
 
 
