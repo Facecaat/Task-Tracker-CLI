@@ -1,6 +1,9 @@
+import json
+
 class Tasks:
 
     tasks = []
+    task_id = 0
 
     @property
     def task(self):
@@ -18,6 +21,8 @@ def running_app():
         command = input("task-cli ")
         if command == "add":
             TaskTracker.task = input()
+            TaskTracker.task_id += 1
+            print(f"Task added successfully (ID: {TaskTracker.task_id})")
 
 
 
