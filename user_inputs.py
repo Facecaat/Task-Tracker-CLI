@@ -15,6 +15,13 @@ class Tasks:
 
 TaskTracker = Tasks()
 
+#https://stepik.org/lesson/518492/step/1?unit=510940
+#переработать ввод в json-формат и записать его в json-файл
+'''
+with open('tasks.json', 'w') as file:
+    json,dump(command, file)
+'''
+
 
 def running_app():
     while True:
