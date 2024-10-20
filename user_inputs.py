@@ -11,6 +11,7 @@ def running_app():
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
             base_structure['NotMarked'].append(task_dict)
+            print(base_structure)
             with open('tasks.json', 'w') as file:
                 json.dump(base_structure, file, indent=2)
             print(f"Task added successfully (ID: {classes.TaskTracker.task_id})")
@@ -83,25 +84,21 @@ def running_app():
                 return int(id)
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
-                print(base_structure)
-                what_to_add = base_structure['NotMarked'][int(task_id)-1]
-                '''
-                
-                
-                        удалять не по индексу списка а по значению словаря
+                for item in base_structure['NotMarked']:
+                    what_to_add = item[str(task_id)]
 
-
-'''
             try:
                 task_id = get_id(task_id)
                 updatable = False
                 for item in base_structure['NotMarked']:
                     if str(task_id) in item:
-                        base_structure['Marked'].append(what_to_add)
+                        base_structure['Marked'].append({str(classes.TaskTracker.task_id): what_to_add})
+                        del item[str(task_id)]
                         print(f"ID {item}: in 'Marked' now")
                         updatable = True
+                        classes.TaskTracker.task_id -= 1
                         break
-                del base_structure['NotMarked'][int(task_id)-1]
+
 
                 if not updatable:
                     print("Error: ID is not exist")
