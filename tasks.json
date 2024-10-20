@@ -1,13 +1,9 @@
 {
-  "NotMarked": [
-    {
-      "1": "bob"
-    }
-  ],
-  "Marked": [
+  "NotMarked": [],
+  "Marked": [],
+  "Finished": [
     {
       "1": "lol"
     }
-  ],
-  "Finished": []
+  ]
 }
