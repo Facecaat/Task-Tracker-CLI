@@ -74,8 +74,8 @@ def running_app():
             except TypeError as e:
                 print(e)
 
-
-
+        '''Сделать каждому списку [marked],  [notmarked] свой счетчик и id счетчика присваивать новому делу, а 
+        при удалении дела скидывать счетчик назад'''
         if command in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
             task_id: str = input()
             def get_id(id: int):
@@ -98,6 +98,8 @@ def running_app():
                         updatable = True
                         classes.TaskTracker.task_id -= 1
                         break
+
+                base_structure['NotMarked'] = [d for d in base_structure['NotMarked'] if d]
 
 
                 if not updatable:

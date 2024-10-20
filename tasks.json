@@ -1,12 +1,19 @@
 {
   "NotMarked": [
     {
-      "1": "lol"
+      "1": "john"
     },
     {
-      "2": "bitch"
+      "2": "scissors"
     }
   ],
-  "Marked": [],
+  "Marked": [
+    {
+      "1": "mark"
+    },
+    {
+      "1": "cock"
+    }
+  ],
   "Finished": []
 }
