@@ -1,4 +1,5 @@
 import classes
+import user_inputs_functions
 import json
 
 def running_app():
@@ -7,8 +8,7 @@ def running_app():
         if command in ["add", "добавить"]:
             task_value: str = input()
             task_dict = {str(classes.not_marked_counter): task_value}
-            with open('tasks.json', 'r') as file:
-                base_structure = json.load(file)
+            base_structure = user_inputs_functions.load_json()
             base_structure['NotMarked'].append(task_dict)
             print(base_structure)
             with open('tasks.json', 'w') as file:
@@ -21,13 +21,10 @@ def running_app():
                 base_structure = json.load(file)
             id_and_description = input().split(maxsplit=1)
 
-            def get_id(id: int):
-                if not id.isdigit():
-                    raise TypeError("Error: ID should be a digit")
-                return int(id)
+
 
             try:
-                task_id = get_id(id_and_description[0])
+                task_id = user_inputs_functions.get_id(id_and_description[0])
                 description = id_and_description[1] if len(id_and_description) > 1 else ""
                 updatable = False
                 for item in base_structure['NotMarked']:
@@ -47,16 +44,9 @@ def running_app():
         if command in ["delete", "удалить"]:
             task_id: str = input()
 
-            def get_id(id: int):
-                if not id.isdigit():
-                    raise TypeError("Error: ID should be a digit")
-                return int(id)
-
-
-            with open('tasks.json', 'r') as file:
-                base_structure = json.load(file)
-
             try:
+                task_id = user_inputs_functions.get_id
+                base_structure = user_inputs_functions.load_json()
                 updatable = False
                 for item in base_structure['NotMarked']:
                     if str(task_id) in item:
@@ -79,15 +69,11 @@ def running_app():
 
         if command in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
             task_id: str = input()
-            def get_id(id: int):
-                if not id.isdigit():
-                    raise TypeError("Error: ID should be a digit")
-                return int(id)
+
             try:
-                task_id = get_id(task_id)
-                with open('tasks.json', 'r') as file:
-                    base_structure = json.load(file)
-                    for item in base_structure['NotMarked']:
+                task_id = task_id = user_inputs_functions.get_id(task_id)
+                base_structure = user_inputs_functions.load_json()
+                for item in base_structure['NotMarked']:
                         if str(task_id) in item:
                             what_to_add = item[str(task_id)]
                             updatable = False
