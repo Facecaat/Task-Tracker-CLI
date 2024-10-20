@@ -74,13 +74,13 @@ def delete_function(task_id):
 
 
 def pmark_function(task_id):
+    updatable = False
     try:
         task_id = get_id(task_id)
         base_structure = load_json()
         for item in base_structure['NotMarked']:
             if str(task_id) in item:
                 what_to_add = item[str(task_id)]
-                updatable = False
                 base_structure['Marked'].append({str(classes.marked_counter): what_to_add})
                 del item[str(task_id)]
                 print(f"ID {classes.marked_counter}: in 'Marked' now")
@@ -101,13 +101,13 @@ def pmark_function(task_id):
 
 
 def dmark_function(task_id):
+    updatable = False
     try:
         task_id = get_id(task_id)
         base_structure = load_json()
         for item in base_structure['Marked']:
             if str(task_id) in item:
                 what_to_add = item[str(task_id)]
-                updatable = False
                 base_structure['Finished'].append({str(classes.finished_counter): what_to_add})
                 del item[str(task_id)]
                 print(f"ID {classes.finished_counter}: in 'Finished' now")
