@@ -45,17 +45,69 @@ def running_app():
 
         if command in ["delete", "удалить"]:
             task_id: str = input()
+
+            def get_id(id: int):
+                if not id.isdigit():
+                    raise TypeError("Error: ID should be a digit")
+                return int(id)
+
+
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
-            updatable = False
-            for item in base_structure['NotMarked']:
-                if str(task_id) in item:
-                    del item[str(task_id)]
-                    print(f"Task deleted successfully (ID: {task_id})")
-                    updatable = True
-                    classes.TaskTracker.task_id -= 1
-                    break
-            if not updatable:
-                print("Error: ID is not exist")
-            with open('tasks.json', 'w') as file:
-                json.dump(base_structure, file, indent=2)
+
+            try:
+                updatable = False
+                for item in base_structure['NotMarked']:
+                    if str(task_id) in item:
+                        del item[str(task_id)]
+                        print(f"Task deleted successfully (ID: {task_id})")
+                        updatable = True
+                        classes.TaskTracker.task_id -= 1
+                        break
+
+                if not updatable:
+                    print("Error: ID is not exist")
+                with open('tasks.json', 'w') as file:
+                    json.dump(base_structure, file, indent=2)
+
+            except TypeError as e:
+                print(e)
+
+
+
+        if command in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
+            task_id: str = input()
+            def get_id(id: int):
+                if not id.isdigit():
+                    raise TypeError("Error: ID should be a digit")
+                return int(id)
+            with open('tasks.json', 'r') as file:
+                base_structure = json.load(file)
+                print(base_structure)
+                what_to_add = base_structure['NotMarked'][int(task_id)-1]
+                '''
+                
+                
+                        удалять не по индексу списка а по значению словаря
+
+
+'''
+            try:
+                task_id = get_id(task_id)
+                updatable = False
+                for item in base_structure['NotMarked']:
+                    if str(task_id) in item:
+                        base_structure['Marked'].append(what_to_add)
+                        print(f"ID {item}: in 'Marked' now")
+                        updatable = True
+                        break
+                del base_structure['NotMarked'][int(task_id)-1]
+
+                if not updatable:
+                    print("Error: ID is not exist")
+
+                with open('tasks.json', 'w') as file:
+                    json.dump(base_structure, file, indent=2)
+
+            except TypeError as e:
+                print(e)
