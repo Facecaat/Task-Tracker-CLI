@@ -5,16 +5,16 @@ def running_app():
     while True:
         command: str = input("task-cli ")
         if command in ["add", "добавить"]:
-            classes.TaskTracker.task_id += 1
             task_value: str = input()
-            task_dict = {str(classes.TaskTracker.task_id): task_value}
+            task_dict = {str(classes.not_marked_counter): task_value}
             with open('tasks.json', 'r') as file:
                 base_structure = json.load(file)
             base_structure['NotMarked'].append(task_dict)
             print(base_structure)
             with open('tasks.json', 'w') as file:
                 json.dump(base_structure, file, indent=2)
-            print(f"Task added successfully (ID: {classes.TaskTracker.task_id})")
+            print(f"Task added successfully (ID: {classes.not_marked_counter})")
+            classes.not_marked_counter += 1
 
         if command in ["update", "обновить"]:
             with open('tasks.json', 'r') as file:
@@ -63,8 +63,10 @@ def running_app():
                         del item[str(task_id)]
                         print(f"Task deleted successfully (ID: {task_id})")
                         updatable = True
-                        classes.TaskTracker.task_id -= 1
+                        classes.not_marked_counter -= 1
                         break
+
+                base_structure['NotMarked'] = [d for d in base_structure['NotMarked'] if d]
 
                 if not updatable:
                     print("Error: ID is not exist")
@@ -74,30 +76,28 @@ def running_app():
             except TypeError as e:
                 print(e)
 
-        '''Сделать каждому списку [marked],  [notmarked] свой счетчик и id счетчика присваивать новому делу, а 
-        при удалении дела скидывать счетчик назад'''
+
         if command in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
             task_id: str = input()
             def get_id(id: int):
                 if not id.isdigit():
                     raise TypeError("Error: ID should be a digit")
                 return int(id)
-            with open('tasks.json', 'r') as file:
-                base_structure = json.load(file)
-                for item in base_structure['NotMarked']:
-                    what_to_add = item[str(task_id)]
-
             try:
                 task_id = get_id(task_id)
-                updatable = False
-                for item in base_structure['NotMarked']:
-                    if str(task_id) in item:
-                        base_structure['Marked'].append({str(classes.TaskTracker.task_id): what_to_add})
-                        del item[str(task_id)]
-                        print(f"ID {item}: in 'Marked' now")
-                        updatable = True
-                        classes.TaskTracker.task_id -= 1
-                        break
+                with open('tasks.json', 'r') as file:
+                    base_structure = json.load(file)
+                    for item in base_structure['NotMarked']:
+                        if str(task_id) in item:
+                            what_to_add = item[str(task_id)]
+                            updatable = False
+                            base_structure['Marked'].append({str(classes.marked_counter): what_to_add})
+                            del item[str(task_id)]
+                            print(f"ID {item}: in 'Marked' now")
+                            updatable = True
+                            classes.not_marked_counter -= 1
+                            classes.marked_counter += 1
+                            break
 
                 base_structure['NotMarked'] = [d for d in base_structure['NotMarked'] if d]
 
