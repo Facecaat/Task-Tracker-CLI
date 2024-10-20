@@ -29,6 +29,7 @@ finished_counter = 1
 with open("tasks.json", 'w') as file:
     json.dump(base_structure, file, indent=2)
 
+
 @dataclass
 class Task:
     task_id: int

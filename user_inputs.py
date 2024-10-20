@@ -9,9 +9,6 @@ import user_inputs_functions
 #todo *  написать тесты
 #todo *  написать эксепшены
 
-
-
-
 def running_app():
     while True:
         command: str = input("task-cli ").split()
@@ -35,7 +32,20 @@ def running_app():
             task_id = command[1]
             user_inputs_functions.dmark_function(task_id)
 
-
-        if command[0] in ["list", "список"]:
+        if command[0] in ["list", "список"] and len(command) == 1:
             base_structure = user_inputs_functions.load_json()
             print(base_structure)
+
+        elif command[0] == "nml" or (command[0] in ["list", "список"] and command[1] in ["todo", "не"]):
+            base_structure = user_inputs_functions.load_json()
+            print(base_structure['NotMarked'])
+
+        elif command[0] == "ml" or (command[0] in ["list", "список"] and command[1] in ["in-progress", "на"]):
+            base_structure = user_inputs_functions.load_json()
+            print(base_structure['Marked'])
+
+        elif command[0] == "fl" or (command[0] in ["list", "список"] and command[1] in ["done", "выполненных"]):
+            base_structure = user_inputs_functions.load_json()
+            print(base_structure['Finished'])
+        else:
+            print(f"Error: command '{' '.join(command)}' does not exist")
