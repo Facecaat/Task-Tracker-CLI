@@ -1,11 +1,9 @@
-import classes
 import user_inputs_functions
 
-
-#todo ** переписать на pydentic
+#todo *  сделать красивый вывод времени
+#todo *  сделать красивый вывод списка дел
 #todo *  написать тесты
 #todo *  написать эксепшены
-
 
 def running_app():
     while True:

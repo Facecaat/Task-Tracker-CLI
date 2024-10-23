@@ -1,21 +1,13 @@
 {
-  "NotMarked": [
+  "NotMarked": [],
+  "Marked": [
     {
       "task_id": 1,
-      "task_description": "lol",
-      "task_status": "NotMarked",
-      "task_created": "2024-10-23T22:22:24.563279",
-      "task_updated": "2024-10-23T22:22:24.563279"
-    }
-  ],
-  "Marked": [],
-  "Finished": [
-    {
-      "task_id": 2,
       "task_description": "bob",
       "task_status": "NotMarked",
-      "task_created": "2024-10-23T22:22:25.256307",
-      "task_updated": "2024-10-23T22:22:25.256307"
+      "task_created": "2024-10-23T22:26:44.014801",
+      "task_updated": "2024-10-23T22:26:44.014801"
     }
-  ]
+  ],
+  "Finished": []
 }

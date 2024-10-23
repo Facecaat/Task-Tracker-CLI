@@ -1,8 +1,7 @@
 import json
 import classes
 import datetime
-import user_inputs
-from classes import base_structure
+
 
 
 #check_ID_is_digit_function
@@ -33,7 +32,6 @@ def add_function(task_value):
     }
 
     class_task_dict = classes.Task(**task_data)
-    print(class_task_dict)
     base_structure = load_json()
     base_structure['NotMarked'].append(class_task_dict.dict())
     dump_json(base_structure)
