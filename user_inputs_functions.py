@@ -47,28 +47,11 @@ def update_function(id_and_description):
         task_id = get_id(id_and_description[0])
         description = id_and_description[1] if len(id_and_description) > 1 else ""
         updatable = False
+        #todo добавь проверку если вводят update lol просто
         for item in base_structure['NotMarked']:
-            item['task_description'] = description
-            item['task_updated'] = datetime.datetime.now().isoformat()
-            print(f"Task (ID: {task_id}) now is: {description}")
-            updatable = True
-            break
-        if not updatable:
-            print("Error: ID does not exist")
-        dump_json(base_structure)
-
-
-    except TypeError as e:
-        print(e)
-'''
-    try:
-        base_structure = load_json()
-        task_id = get_id(id_and_description[0])
-        description = id_and_description[1] if len(id_and_description) > 1 else ""
-        updatable = False
-        for item in base_structure['NotMarked']:
-            if str(task_id) in item:
-                item[str(task_id)] = description
+            if item['task_id'] == int(task_id):
+                item['task_description'] = description
+                item['task_updated'] = datetime.datetime.now().isoformat()
                 print(f"Task (ID: {task_id}) now is: {description}")
                 updatable = True
                 break
@@ -76,18 +59,19 @@ def update_function(id_and_description):
             print("Error: ID does not exist")
         dump_json(base_structure)
 
+
     except TypeError as e:
         print(e)
-'''
+
 
 def delete_function(task_id):
     try:
         task_id = get_id(task_id)
         base_structure = load_json()
         updatable = False
-        for item in base_structure['NotMarked']:
-            if str(task_id) in item:
-                del item[str(task_id)]
+        for index, item in enumerate(base_structure['NotMarked']):
+            if item['task_id'] == int(task_id):
+                del base_structure['NotMarked'][index]
                 print(f"Task deleted successfully (ID: {task_id})")
                 updatable = True
                 classes.not_marked_counter -= 1
@@ -108,11 +92,11 @@ def pmark_function(task_id):
     try:
         task_id = get_id(task_id)
         base_structure = load_json()
-        for item in base_structure['NotMarked']:
-            if str(task_id) in item:
-                what_to_add = item[str(task_id)]
-                base_structure['Marked'].append({str(classes.marked_counter): what_to_add})
-                del item[str(task_id)]
+        for index, item in enumerate(base_structure['NotMarked']):
+            if item['task_id'] == int(task_id):
+                what_to_add = base_structure['NotMarked'][index]
+                base_structure['Marked'].append(what_to_add)
+                del base_structure['NotMarked'][index]
                 print(f"ID {classes.marked_counter}: in 'Marked' now")
                 updatable = True
                 classes.not_marked_counter -= 1
@@ -135,12 +119,12 @@ def dmark_function(task_id):
     try:
         task_id = get_id(task_id)
         base_structure = load_json()
-        for item in base_structure['Marked']:
-            if str(task_id) in item:
-                what_to_add = item[str(task_id)]
-                base_structure['Finished'].append({str(classes.finished_counter): what_to_add})
-                del item[str(task_id)]
-                print(f"ID {classes.finished_counter}: in 'Finished' now")
+        for index, item in enumerate(base_structure['Marked']):
+            if item['task_id'] == int(task_id):
+                what_to_add = base_structure['Marked'][index]
+                base_structure['Finished'].append(what_to_add)
+                del base_structure['Marked'][index]
+                print(f"ID {classes.marked_counter}: in 'Finished' now")
                 updatable = True
                 classes.marked_counter -= 1
                 classes.finished_counter += 1
