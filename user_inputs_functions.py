@@ -1,6 +1,9 @@
 import json
 import classes
+import datetime
 import user_inputs
+from classes import base_structure
+
 
 #check_ID_is_digit_function
 def get_id(id: int):
@@ -21,16 +24,43 @@ def dump_json(base_structure):
 
 
 def add_function(task_value):
-    # class_task_dick = classes.Task(classes.not_marked_counter, task_value, classes.statuses['1'], )
-    task_dict = {str(classes.not_marked_counter): task_value}
+    task_data = {
+        'task_id': classes.not_marked_counter,
+        'task_description': task_value,
+        'task_status': classes.statuses['1'],
+        'task_created': datetime.datetime.now().isoformat(),
+        'task_updated': datetime.datetime.now().isoformat()
+    }
+
+    class_task_dict = classes.Task(**task_data)
+    print(class_task_dict)
     base_structure = load_json()
-    base_structure['NotMarked'].append(task_dict)
+    base_structure['NotMarked'].append(class_task_dict.dict())
     dump_json(base_structure)
-    print (f"Task added successfully (ID: {classes.not_marked_counter})")
+    print(f"Task added successfully (ID: {classes.not_marked_counter})")
     classes.not_marked_counter += 1
 
 
 def update_function(id_and_description):
+    try:
+        base_structure = load_json()
+        task_id = get_id(id_and_description[0])
+        description = id_and_description[1] if len(id_and_description) > 1 else ""
+        updatable = False
+        for item in base_structure['NotMarked']:
+            item['task_description'] = description
+            item['task_updated'] = datetime.datetime.now().isoformat()
+            print(f"Task (ID: {task_id}) now is: {description}")
+            updatable = True
+            break
+        if not updatable:
+            print("Error: ID does not exist")
+        dump_json(base_structure)
+
+
+    except TypeError as e:
+        print(e)
+'''
     try:
         base_structure = load_json()
         task_id = get_id(id_and_description[0])
@@ -48,7 +78,7 @@ def update_function(id_and_description):
 
     except TypeError as e:
         print(e)
-
+'''
 
 def delete_function(task_id):
     try:

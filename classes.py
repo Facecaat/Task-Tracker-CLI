@@ -1,5 +1,5 @@
 import json
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
 class Tasks:
@@ -30,8 +30,8 @@ with open("tasks.json", 'w') as file:
     json.dump(base_structure, file, indent=2)
 
 
-@dataclass
-class Task:
+
+class Task(BaseModel):
     task_id: int
     task_description: str
     task_status: str
