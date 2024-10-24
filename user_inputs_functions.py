@@ -27,8 +27,8 @@ def add_function(task_value):
         'task_id': classes.not_marked_counter,
         'task_description': task_value,
         'task_status': classes.statuses['1'],
-        'task_created': datetime.datetime.now().isoformat(),
-        'task_updated': datetime.datetime.now().isoformat()
+        'task_created': datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M'),
+        'task_updated': datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
     }
 
     class_task_dict = classes.Task(**task_data)
@@ -49,7 +49,7 @@ def update_function(id_and_description):
         for item in base_structure['NotMarked']:
             if item['task_id'] == int(task_id):
                 item['task_description'] = description
-                item['task_updated'] = datetime.datetime.now().isoformat()
+                item['task_updated'] = datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
                 print(f"Task (ID: {task_id}) now is: {description}")
                 updatable = True
                 break
@@ -100,6 +100,10 @@ def pmark_function(task_id):
                 classes.not_marked_counter -= 1
                 classes.marked_counter += 1
                 break
+        for item in base_structure['Marked']:
+            if item['task_id'] == int(task_id):
+                item['task_updated'] = datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
+                break
 
         base_structure['NotMarked'] = [d for d in base_structure['NotMarked'] if d]
 
@@ -129,6 +133,10 @@ def dmark_function(task_id):
                 break
             else:
                 print("Error: ID does not exist in Marked")
+        for item in base_structure['Finished']:
+            if item['task_id'] == int(task_id):
+                item['task_updated'] = datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
+                break
 
         base_structure['Marked'] = [d for d in base_structure['Marked'] if d]
 
