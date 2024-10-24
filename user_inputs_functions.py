@@ -1,13 +1,13 @@
 import json
 import classes
 import datetime
-
+from exceptions import IdIsNotDigit, IdIsNotExists
 
 
 #check_ID_is_digit_function
 def get_id(id: int):
     if not id.isdigit():
-        raise TypeError("Error: ID should be a digit")
+        raise IdIsNotDigit("Error: ID should be a digit")
     return str(id)
 
 
