@@ -1,4 +1,5 @@
-import time
+import user_inputs
+
 
 if __name__ == '__main__':
-    pass
+    user_inputs.running_app()
