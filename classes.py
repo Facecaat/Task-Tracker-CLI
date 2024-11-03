@@ -1,23 +1,7 @@
 import json
+
 from pydantic import BaseModel
 
-
-class Tasks:
-    def __init__(self):
-        self.tasks = []
-
-
-    @property
-    def task(self):
-        return self.tasks
-
-
-    @task.setter
-    def task(self, value):
-        self.tasks.append(value)
-
-
-TaskTracker = Tasks()
 statuses = {'1': "NotMarked", '2': "Marked", '3': "Finished"}
 base_structure = {}
 base_structure['NotMarked'] = []
@@ -26,10 +10,8 @@ base_structure['Marked'] = []
 marked_counter = 1
 base_structure['Finished'] = []
 finished_counter = 1
-with open("tasks.json", 'w') as file:
-    json.dump(base_structure, file, indent=2)
-
-
+with open("tasks.json", 'w', encoding='utf-8') as file:
+    json.dump(base_structure, file, indent=2, ensure_ascii=False)
 
 class Task(BaseModel):
     task_id: int
@@ -37,4 +19,3 @@ class Task(BaseModel):
     task_status: str
     task_created: str
     task_updated: str
-

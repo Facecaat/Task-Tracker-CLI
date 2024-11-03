@@ -1,5 +1,4 @@
-import user_inputs
-
+from application import run
 
 if __name__ == '__main__':
-    user_inputs.running_app()
+    run()
