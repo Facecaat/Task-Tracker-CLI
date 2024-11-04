@@ -62,22 +62,24 @@ def add_task(task_value):
     classes.not_marked_counter += 1
 
 
-def update_task(id_and_description):
+def update_task(action):
     try:
         base_structure = load_json()
-        task_id = get_id(id_and_description[0])
-        description = id_and_description[1] if len(id_and_description) > 1 else ""
-        updatable = False
-        # todo добавь проверку если вводят update lol просто
-        for item in base_structure['NotMarked']:
-            if item['task_id'] == int(task_id):
-                item['task_description'] = description
-                item['task_updated'] = datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
-                print(f"Task (ID: {task_id}) now is: {description}")
-                updatable = True
-                break
-        if not updatable:
-            print("Error: ID does not exist")
+        task_id = get_id(action[0])
+        if len(action) == 1:
+            print("Error: Expected a new_value")
+        else:
+            description = " ".join(action[1:])
+            updatable = False
+            for item in base_structure['NotMarked']:
+                if item['task_id'] == int(task_id):
+                    item['task_description'] = description
+                    item['task_updated'] = datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
+                    print(f"Task (ID: {task_id}) now is: {description}")
+                    updatable = True
+                    break
+            if not updatable:
+                print("Error: ID does not exist")
         dump_json(base_structure)
 
 

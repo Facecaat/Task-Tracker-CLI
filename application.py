@@ -6,39 +6,38 @@ import manager
 
 def run():
     while True:
-        command = input("task-cli ").split()
-        if command[0] in ["add", "добавить"]:
-            manager.add_task(command[1])
+        command, *action = input("task-cli ").split()
+        if command in ["add", "добавить"]:
+            manager.add_task(" ".join(action))
 
-        elif command[0] in ["update", "обновить"]:
-            id_and_description = command[1], command[2]
-            manager.update_task(id_and_description)
+        elif command in ["update", "обновить"]:
+            manager.update_task(action)
 
-        elif command[0] in ["delete", "удалить"]:
-            task_id = command[1]
-            manager.delete_task(task_id)
+        elif command in ["delete", "удалить"]:
+            task_id = action
+            manager.delete_task("".join(task_id))
 
-        elif command[0] in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
-            task_id = command[1]
-            manager.pmark_task(task_id)
+        elif command in ["mark-in-progress", "пометить-на-выполнение", "pmark"]:
+            task_id = action
+            manager.pmark_task("".join(task_id))
 
-        elif command[0] in ["mark-done", "поменять-на-окончание", "dmark"]:
-            task_id = command[1]
-            manager.dmark_task(task_id)
+        elif command in ["mark-done", "поменять-на-окончание", "dmark"]:
+            task_id = action
+            manager.dmark_task("".join(task_id))
 
-        elif command[0] in ["list", "список"] and len(command) == 1:
+        elif command in ["list", "список"] and len(command) == 1:
             manager.task_list()
 
-        elif command[0] == "nml" or (command[0] in ["list", "список"] and command[1] in ["todo", "не"]):
+        elif command in ["list-to-do", "список-не-выполненных", "nml"]:
             manager.task_nml()
 
-        elif command[0] == "ml" or (command[0] in ["list", "список"] and command[1] in ["in-progress", "на"]):
+        elif command in ["list-in-progress", "список-на-выполнение", "ml"]:
             manager.task_ml()
 
-        elif command[0] == "fl" or (command[0] in ["list", "список"] and command[1] in ["done", "выполненных"]):
+        elif command in ["list done", "список-выполненных", "fl"]:
             manager.task_fl()
 
-        elif command[0] not in ["add", "update", "delete"]:
-            print(f"Error: command '{' '.join(command)}' does not exist")
+        else:
+            print(f"Error: command '{(command)}' does not exist")
 
         manager.refresh()
