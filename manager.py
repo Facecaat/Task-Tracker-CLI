@@ -1,28 +1,25 @@
-from json import load, dump
-import classes
+import files
+from files import load_json, dump_json
+from classes import InitializeVariables, Task
 import datetime
 
-from classes import base_structure
-
-
-# refreshing lists
 def refresh():
     base_structure = load_json()
     if base_structure['NotMarked']:
-        classes.not_marked_counter = 1
+        not_marked_counter = 1
         for item in base_structure['NotMarked']:
-            item['task_id'] = classes.not_marked_counter
-            classes.not_marked_counter += 1
+            item['task_id'] = not_marked_counter
+            not_marked_counter += 1
     if base_structure['Marked']:
-        classes.marked_counter = 1
+        marked_counter = 1
         for item in base_structure['Marked']:
-            item['task_id'] = classes.marked_counter
-            classes.marked_counter += 1
+            item['task_id'] = marked_counter
+            marked_counter += 1
     if base_structure['Finished']:
-        classes.finished_counter = 1
+        finished_counter = 1
         for item in base_structure['Finished']:
-            item['task_id'] = classes.finished_counter
-            classes.finished_counter += 1
+            item['task_id'] = finished_counter
+            finished_counter += 1
     dump_json(base_structure)
 
 
@@ -33,33 +30,21 @@ def get_id(id):
     return str(id)
 
 
-# load_json_function
-def load_json():
-    with open('tasks.json', 'r', encoding='utf-8') as file:
-        return load(file)
-
-
-# dump_json_function
-def dump_json(base_structure):
-    with open('tasks.json', 'w', encoding='utf-8') as file:
-        dump(base_structure, file, indent=2, ensure_ascii=False)
-
-
 def add_task(task_value):
     task_data = {
-        'task_id': classes.not_marked_counter,
+        'task_id': InitializeVariables.not_marked_counter,
         'task_description': task_value,
-        'task_status': classes.statuses['1'],
+        'task_status': files.statuses['1'],
         'task_created': datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M'),
         'task_updated': datetime.datetime.now().strftime('(%d-%m-%Y) %H:%M')
     }
 
-    class_task_dict = classes.Task(**task_data)
+    class_task_dict = Task(**task_data)
     base_structure = load_json()
     base_structure['NotMarked'].append(class_task_dict.dict())
     dump_json(base_structure)
-    print(f"Task added successfully (ID: {classes.not_marked_counter})")
-    classes.not_marked_counter += 1
+    print(f"Task added successfully (ID: {InitializeVariables.not_marked_counter})")
+    InitializeVariables.not_marked_counter += 1
 
 
 def update_task(action):
@@ -97,7 +82,7 @@ def delete_task(task_id):
                 del base_structure['NotMarked'][index]
                 print(f"Task deleted successfully (ID: {task_id})")
                 updatable = True
-                classes.not_marked_counter -= 1
+                InitializeVariables.not_marked_counter -= 1
                 break
 
         base_structure['NotMarked'] = [d for d in base_structure['NotMarked'] if d]
@@ -118,14 +103,14 @@ def pmark_task(task_id):
         for index, item in enumerate(base_structure['NotMarked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['NotMarked'][index]
-                what_to_add['task_status'] = classes.statuses['2']
-                what_to_add['task_id'] = classes.marked_counter
+                what_to_add['task_status'] = files.statuses['2']
+                what_to_add['task_id'] = InitializeVariables.marked_counter
                 base_structure['Marked'].append(what_to_add)
                 del base_structure['NotMarked'][index]
                 print(f"ID {task_id}: in 'Marked' now")
                 updatable = True
-                classes.not_marked_counter -= 1
-                classes.marked_counter += 1
+                InitializeVariables.not_marked_counter -= 1
+                InitializeVariables.marked_counter += 1
                 break
         for item in base_structure['Marked']:
             if item['task_id'] == int(task_id):
@@ -151,14 +136,14 @@ def dmark_task(task_id):
         for index, item in enumerate(base_structure['Marked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['Marked'][index]
-                what_to_add['task_status'] = classes.statuses['3']
-                what_to_add['task_id'] = classes.finished_counter
+                what_to_add['task_status'] = files.statuses['3']
+                what_to_add['task_id'] = InitializeVariables.finished_counter
                 base_structure['Finished'].append(what_to_add)
                 del base_structure['Marked'][index]
                 print(f"ID {task_id}: in 'Finished' now")
                 updatable = True
-                classes.marked_counter -= 1
-                classes.finished_counter += 1
+                InitializeVariables.marked_counter -= 1
+                InitializeVariables.finished_counter += 1
                 break
             else:
                 print("Error: ID does not exist in Marked")
