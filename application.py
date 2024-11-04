@@ -1,24 +1,18 @@
 import manager
-
+from files import FileManager
 
 # todo *  write tests
 # todo *  write exceptions
 
 def run():
-   #print("""Welcome to Task-Tracker-CLI app
-   #choose what you want to do:
-   #1. Create task-list
-   #2. Open task-list\n
-   #""")
-   #user_choise = int(input())
-   #match user_choise:
-   #    case 1:
-   #        input("Name your task-list: ")
-   #    case 2:
-   #        input("Write task-list name you want to open")
+
+    file_manager = FileManager()
+    file_name = file_manager.get_current_file()
+
+
 
     while True:
-        command, *action = input("task-cli ").split()
+        command, *action = input(f"task-cli {file_name} ").split()
         if command in ["add", "добавить"]:
             manager.add_task(" ".join(action))
 

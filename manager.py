@@ -1,10 +1,13 @@
 import files
-from files import load_json, dump_json
+from files import load_json, dump_json, FileManager
 from classes import InitializeVariables, Task
+import application
 import datetime
 
+
 def refresh():
-    base_structure = load_json()
+    current_file = application.file_name
+    base_structure = load_json(current_file)
     if base_structure['NotMarked']:
         not_marked_counter = 1
         for item in base_structure['NotMarked']:
@@ -40,7 +43,7 @@ def add_task(task_value):
     }
 
     class_task_dict = Task(**task_data)
-    base_structure = load_json()
+    base_structure = load_json(FileManager.get_current_file)
     base_structure['NotMarked'].append(class_task_dict.dict())
     dump_json(base_structure)
     print(f"Task added successfully (ID: {InitializeVariables.not_marked_counter})")
@@ -49,7 +52,7 @@ def add_task(task_value):
 
 def update_task(action):
     try:
-        base_structure = load_json()
+        base_structure = load_json(files.filename)
         task_id = get_id(action[0])
         if len(action) == 1:
             print("Error: Expected a new_value")
@@ -75,7 +78,7 @@ def update_task(action):
 def delete_task(task_id):
     try:
         task_id = get_id(task_id)
-        base_structure = load_json()
+        base_structure = load_json(files.filename)
         updatable = False
         for index, item in enumerate(base_structure['NotMarked']):
             if item['task_id'] == int(task_id):
@@ -99,7 +102,7 @@ def pmark_task(task_id):
     updatable = False
     try:
         task_id = get_id(task_id)
-        base_structure = load_json()
+        base_structure = load_json(files.filename)
         for index, item in enumerate(base_structure['NotMarked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['NotMarked'][index]
@@ -132,7 +135,7 @@ def dmark_task(task_id):
     updatable = False
     try:
         task_id = get_id(task_id)
-        base_structure = load_json()
+        base_structure = load_json(files.filename)
         for index, item in enumerate(base_structure['Marked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['Marked'][index]
@@ -164,7 +167,7 @@ def dmark_task(task_id):
 
 
 def task_list():
-    base_structure = load_json()
+    base_structure = load_json(files.filename)
     if base_structure['NotMarked']:
         print("_" * 15)
         print("|Not Marked|")
@@ -184,7 +187,7 @@ def task_list():
 
 
 def task_nml():
-    base_structure = load_json()
+    base_structure = load_json(files.filename)
     if base_structure['NotMarked']:
         print("_" * 15)
         print("|Not Marked|")
@@ -196,7 +199,7 @@ def task_nml():
 
 
 def task_ml():
-    base_structure = load_json()
+    base_structure = load_json(files.filename)
     if base_structure['Marked']:
         print("_" * 15)
         print("|Marked|")
@@ -208,7 +211,7 @@ def task_ml():
 
 
 def task_fl():
-    base_structure = load_json()
+    base_structure = load_json(files.filename)
     if base_structure['Finished']:
         print("_" * 15)
         print("|Finished|")
