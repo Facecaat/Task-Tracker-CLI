@@ -1,4 +1,4 @@
-import json
+from json import load, dump
 import classes
 import datetime
 
@@ -27,7 +27,7 @@ def refresh():
 
 
 # check_ID_is_digit_function
-def get_id(id: int):
+def get_id(id):
     if not id.isdigit():
         raise TypeError("Error: ID should be a digit")
     return str(id)
@@ -36,13 +36,13 @@ def get_id(id: int):
 # load_json_function
 def load_json():
     with open('tasks.json', 'r', encoding='utf-8') as file:
-        return json.load(file)
+        return load(file)
 
 
 # dump_json_function
 def dump_json(base_structure):
     with open('tasks.json', 'w', encoding='utf-8') as file:
-        json.dump(base_structure, file, indent=2, ensure_ascii=False)
+        dump(base_structure, file, indent=2, ensure_ascii=False)
 
 
 def add_task(task_value):
@@ -110,9 +110,6 @@ def delete_task(task_id):
         print(e)
 
 
-# todo  *  в конце каждого цикла функцией в run проходить по каждому списку
-# todo  *  и переприсваивать id на каждой таске, чтобы все было по-порядку
-
 def pmark_task(task_id):
     updatable = False
     try:
@@ -121,6 +118,7 @@ def pmark_task(task_id):
         for index, item in enumerate(base_structure['NotMarked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['NotMarked'][index]
+                what_to_add['task_status'] = classes.statuses['2']
                 what_to_add['task_id'] = classes.marked_counter
                 base_structure['Marked'].append(what_to_add)
                 del base_structure['NotMarked'][index]
@@ -153,6 +151,8 @@ def dmark_task(task_id):
         for index, item in enumerate(base_structure['Marked']):
             if item['task_id'] == int(task_id):
                 what_to_add = base_structure['Marked'][index]
+                what_to_add['task_status'] = classes.statuses['3']
+                what_to_add['task_id'] = classes.finished_counter
                 base_structure['Finished'].append(what_to_add)
                 del base_structure['Marked'][index]
                 print(f"ID {task_id}: in 'Finished' now")
@@ -220,6 +220,7 @@ def task_ml():
         print("_" * 15)
     else:
         print("No tasks in Marked list")
+
 
 def task_fl():
     base_structure = load_json()

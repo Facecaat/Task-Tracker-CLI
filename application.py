@@ -5,6 +5,18 @@ import manager
 # todo *  write exceptions
 
 def run():
+   #print("""Welcome to Task-Tracker-CLI app
+   #choose what you want to do:
+   #1. Create task-list
+   #2. Open task-list\n
+   #""")
+   #user_choise = int(input())
+   #match user_choise:
+   #    case 1:
+   #        input("Name your task-list: ")
+   #    case 2:
+   #        input("Write task-list name you want to open")
+
     while True:
         command, *action = input("task-cli ").split()
         if command in ["add", "добавить"]:
