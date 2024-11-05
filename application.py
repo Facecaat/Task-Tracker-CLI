@@ -1,10 +1,8 @@
-from files import PersonalTaskTracker
-
 class Application:
-    def __init__(self):
-        self.personal_task_tracker = PersonalTaskTracker()
+    def __init__(self, personal_task_tracker):
+        self.personal_task_tracker = personal_task_tracker
 
-    def start(self):
+    def choose_file(self):
         while True:
             decision = input("Do you want to create/open a tracker?: ")
             if decision == "create":

@@ -1,5 +1,5 @@
 from json import load, dump
-
+from exceptions import FileDoesNotExist
 
 class PersonalTaskTracker:
     file_structure: dict[str, list] = {
@@ -7,16 +7,19 @@ class PersonalTaskTracker:
         'Marked': [],
         'Finished': []
     }
+    def __init__(self, filename=None):
+        self.filename= filename
 
-    def create_file(self, file_name):
-        self.file_name = file_name
-        self.filename = f"{self.file_name}.json"
+    def create_file(self, filename):
+        self.filename = f"{filename}.json"
         with open(self.filename, 'w', encoding='utf-8') as file:
             dump(self.file_structure, file, indent=3, ensure_ascii=False)
 
-    def open_file(self, file_name):
-        self.file_name = file_name
-        self.filename = f"{self.file_name}.json"
-        with open(self.filename, 'r', encoding='utf-8') as file:
-            current_file = load(file)
-        print(current_file)
+    def open_file(self, filename):
+        self.filename = f"{filename}.json"
+        try:
+            with open(self.filename, 'r', encoding='utf-8') as file:
+                current_file = load(file)
+                print(f'{current_file} successfully opened!')
+        except FileDoesNotExist as error:
+            print(error)
