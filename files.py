@@ -7,6 +7,7 @@ class PersonalTaskTracker:
         'Marked': [],
         'Finished': []
     }
+
     def __init__(self, filename=None):
         self.filename= filename
 
@@ -20,6 +21,6 @@ class PersonalTaskTracker:
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
                 current_file = load(file)
-                print(f'{current_file} successfully opened!')
+                print(f'{self.filename.strip(".json")} successfully opened!')
         except FileDoesNotExist as error:
             print(error)
