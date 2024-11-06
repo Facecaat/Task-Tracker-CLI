@@ -5,6 +5,8 @@ class Application:
     def __init__(self, personal_task_tracker):
         self.personal_task_tracker = personal_task_tracker
 
+    def refresh(self):
+        pass
 
     def choose_file(self):
         while True:
@@ -32,4 +34,5 @@ class Application:
                 print(action)
                 self.command_interactions.create_task(self.current_file, action)
 
+            refresh()
 
