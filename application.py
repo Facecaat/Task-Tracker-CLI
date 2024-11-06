@@ -8,22 +8,16 @@ class Application:
             if decision == "create":
                 file_name = input("Write file name you want to create: ")
                 self.personal_task_tracker.create_file(file_name)
-                decision = input("Do you want to open created file?: ")
-                if decision == "yes":
-                    self.personal_task_tracker.open_file(file_name)
-                else:
-                    continue
+
 
             elif decision == "open":
                 file_name = input("Write file name you want to open: ")
-                self.personal_task_tracker.open_file(file_name)
-                print("If you want to change file, write 'exit'")
-                break
+                self.run(self.personal_task_tracker.open_file(file_name))
 
 
 
 
-    def run(self):
+    def run(self, filename):
         command = input("task-cli ")
         while command != "exit":
             command = input("task-cli ")
