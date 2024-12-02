@@ -20,7 +20,7 @@ class PersonalTaskTracker:
         self.filename = f"{filename}.json"
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
-                current_file = load(file)
                 print(f'{self.filename.strip(".json")} successfully opened!')
+                return self.filename
         except FileDoesNotExist as error:
             print(error)

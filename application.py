@@ -1,12 +1,23 @@
+from textwrap import indent
+
 import manager
+from json import load, dump
 
 
 class Application:
     def __init__(self, personal_task_tracker):
         self.personal_task_tracker = personal_task_tracker
 
-    def refresh(self):
-        pass
+    def refresh(self, filename):
+        current_id = 1
+        with open(filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+        for item in file_structure['NotMarked']:
+            item['id'] = current_id
+            current_id += 1
+        with open(filename, 'w', encoding='utf-8') as file:
+            dump(file_structure, file, indent=3, ensure_ascii=False)
+        return filename
 
     def choose_file(self):
         while True:
@@ -19,20 +30,18 @@ class Application:
                 self.personal_task_tracker.create_file(file_name)
 
             elif decision == "open":
-                file_name = input("Write file name you want to open: ")
-                self.run(f"{file_name}.json")
+                file_name = self.personal_task_tracker.open_file(input("Write file name you want to open: "))
+                self.run(file_name)
 
     def run(self, filename):
         self.current_file = filename
         self.command_interactions = manager.CommandInteractions()
-        print(self.current_file)
         command, *action = "", ""
         while command != "exit":
             command, *action = input("task-cli ").split()
-            print(command, *action)
             if command in ['add', 'добавить']:
-                print(action)
                 self.command_interactions.create_task(self.current_file, action)
-
-            refresh()
-
+            elif command in ['del', 'удалить']:
+                # self.command_interactions.delete_task(self.current_file, action)
+                pass
+            self.current_file = self.refresh(self.current_file)
