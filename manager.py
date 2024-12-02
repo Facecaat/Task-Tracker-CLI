@@ -2,6 +2,8 @@ from idlelib.iomenu import encoding
 from json import load, dump
 import datetime
 
+from pydantic.v1.env_settings import env_file_sentinel
+
 
 class CommandInteractions:
     task_statuses = {'1': 'NotMarked',
@@ -73,4 +75,14 @@ class CommandInteractions:
             dump(file_structure, file, indent=3, ensure_ascii=False)
 
     def update_task(self, filename, actions):
-        pass
+        self.filename = filename
+        self.actions = actions
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+            check_id = int(self.actions[0])
+        for item in file_structure['NotMarked']:
+            if item['id'] == int(*self.actions[0]):
+                item['description'] = " ".join(self.actions[1:])
+                print(f"Task (ID {int("".join(self.actions[0]))}) has been successfully updated")
+        with open(self.filename, 'w', encoding='utf-8') as file:
+            dump(file_structure, file, indent=3, ensure_ascii=False)
