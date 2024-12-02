@@ -1,6 +1,7 @@
 from json import load, dump
 from exceptions import FileDoesNotExist
 
+
 class PersonalTaskTracker:
     file_structure: dict[str, list] = {
         'NotMarked': [],
@@ -9,7 +10,7 @@ class PersonalTaskTracker:
     }
 
     def __init__(self, filename=None):
-        self.filename= filename
+        self.filename = filename
 
     def create_file(self, filename):
         self.filename = f"{filename}.json"

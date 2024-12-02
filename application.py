@@ -42,6 +42,10 @@ class Application:
             if command in ['add', 'добавить']:
                 self.command_interactions.create_task(self.current_file, action)
             elif command in ['del', 'удалить']:
-                # self.command_interactions.delete_task(self.current_file, action)
-                pass
+                self.command_interactions.delete_task(self.current_file, action)
+            elif command in ['pmark', 'mark-in-progress', 'пометить-на-выполнение']:
+                self.command_interactions.pmark_task(self.current_file, action)
+            elif command in ['dmark', 'mark-done', 'задача-выполнена']:
+                self.command_interactions.dmark_task(self.current_file, action)
+
             self.current_file = self.refresh(self.current_file)
