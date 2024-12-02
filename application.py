@@ -47,5 +47,7 @@ class Application:
                 self.command_interactions.pmark_task(self.current_file, action)
             elif command in ['dmark', 'mark-done', 'задача-выполнена']:
                 self.command_interactions.dmark_task(self.current_file, action)
+            elif command in ['update', 'обновить']:
+                self.command_interactions.update_task(self.current_file, action)
 
             self.current_file = self.refresh(self.current_file)

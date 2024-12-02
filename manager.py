@@ -71,3 +71,6 @@ class CommandInteractions:
                 print(f"Task (ID:  {int("".join(self.actions))}) has been successfully removed into Finished")
         with open(self.filename, 'w', encoding='utf-8') as file:
             dump(file_structure, file, indent=3, ensure_ascii=False)
+
+    def update_task(self, filename, actions):
+        pass

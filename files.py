@@ -1,5 +1,6 @@
 from json import load, dump
 from exceptions import FileDoesNotExist
+import os
 
 
 class PersonalTaskTracker:
@@ -18,10 +19,17 @@ class PersonalTaskTracker:
             dump(self.file_structure, file, indent=3, ensure_ascii=False)
 
     def open_file(self, filename):
-        self.filename = f"{filename}.json"
-        try:
-            with open(self.filename, 'r', encoding='utf-8') as file:
-                print(f'{self.filename.strip(".json")} successfully opened!')
-                return self.filename
-        except FileDoesNotExist as error:
-            print(error)
+        while True:
+            try:
+                self.filename = f"{filename}.json"
+                if os.path.exists(self.filename):
+                    with open(self.filename, 'r', encoding='utf-8') as file:
+                        print(f'{self.filename.strip(".json")} successfully opened!')
+                        return self.filename
+                else:
+                    raise FileDoesNotExist
+            except FileDoesNotExist as e:
+                print(e.message)
+                filename = (input("Write file name you want to open: "))
+
+
