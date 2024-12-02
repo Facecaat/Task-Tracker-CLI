@@ -6,4 +6,6 @@ class FileDoesNotExist(Exception):
         self.message = "Error. That file does not exist"
         super().__init__(self.message)
 
+        #todo добавь общие ексепшены в run, а так же ексепшены на все функции
+
 
