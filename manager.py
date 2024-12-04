@@ -55,6 +55,7 @@ class CommandInteractions:
             file_structure = load(file)
         for index, item in enumerate(file_structure['NotMarked']):
             if item['id'] == int("".join(self.actions)):
+                item['status'] = self.task_statuses['2']
                 file_structure['Marked'].append(item)
                 del file_structure['NotMarked'][index]
                 print(f"Task (ID:  {int("".join(self.actions))}) has been successfully removed into Marked")
@@ -68,6 +69,7 @@ class CommandInteractions:
             file_structure = load(file)
         for index, item in enumerate(file_structure['Marked']):
             if item['id'] == int("".join(self.actions)):
+                item['status'] = self.task_statuses['3']
                 file_structure['Finished'].append(item)
                 del file_structure['Marked'][index]
                 print(f"Task (ID:  {int("".join(self.actions))}) has been successfully removed into Finished")
@@ -86,3 +88,9 @@ class CommandInteractions:
                 print(f"Task (ID {int("".join(self.actions[0]))}) has been successfully updated")
         with open(self.filename, 'w', encoding='utf-8') as file:
             dump(file_structure, file, indent=3, ensure_ascii=False)
+
+    def show_tasks(self, filename):
+        self.filename = filename
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+

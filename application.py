@@ -1,18 +1,27 @@
-from textwrap import indent
-
 import manager
 from json import load, dump
 
 
+
 class Application:
-    def __init__(self, personal_task_tracker):
+    def __init__(self, personal_task_tracker, messages_manager):
         self.personal_task_tracker = personal_task_tracker
+        self.messages = messages_manager
+
 
     def refresh(self, filename):
         current_id = 1
         with open(filename, 'r', encoding='utf-8') as file:
             file_structure = load(file)
         for item in file_structure['NotMarked']:
+            item['id'] = current_id
+            current_id += 1
+        current_id = 1
+        for item in file_structure['Marked']:
+            item['id'] = current_id
+            current_id += 1
+        current_id = 1
+        for item in file_structure['Finished']:
             item['id'] = current_id
             current_id += 1
         with open(filename, 'w', encoding='utf-8') as file:
@@ -23,7 +32,7 @@ class Application:
         while True:
             decision = input("Do you want to create/open a tracker?: ")
             if decision == 'exit':
-                print("Program in finished")
+                self.messages.stop_run()
                 break
             if decision == "create":
                 file_name = input("Write file name you want to create: ")
@@ -49,5 +58,7 @@ class Application:
                 self.command_interactions.dmark_task(self.current_file, action)
             elif command in ['update', 'обновить']:
                 self.command_interactions.update_task(self.current_file, action)
+            elif command in ['list', 'lst', 'список']:
+                self.command_interactions.show_tasks(self.current_file)
 
             self.current_file = self.refresh(self.current_file)
