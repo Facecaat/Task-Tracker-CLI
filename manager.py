@@ -112,4 +112,32 @@ class CommandInteractions:
         for item in file_structure['Finished']:
             print(f"{item['id']}: {item['description']}. Last change: {item['updated']}")
 
+    def list_of_done(self, filename):
+        self.filename = filename
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+        print("_" * 16)
+        print("Finished tasks:|")
+        print("_" * 16)
+        for item in file_structure['Finished']:
+            print(f"{item['id']}: {item['description']}. Last change: {item['updated']}")
 
+    def list_of_marked(self, filename):
+        self.filename = filename
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+        print("_" * 14)
+        print("Marked tasks:|")
+        print("_" * 14)
+        for item in file_structure['Marked']:
+            print(f"{item['id']}: {item['description']}. Last change: {item['updated']}")
+
+    def list_of_not_marked(self, filename):
+        self.filename = filename
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            file_structure = load(file)
+        print("_" * 18)
+        print("Not marked tasks:|")
+        print("_" * 18)
+        for item in file_structure['NotMarked']:
+            print(f"{item['id']}: {item['description']}. Last change: {item['updated']}")

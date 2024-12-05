@@ -60,5 +60,11 @@ class Application:
                 self.command_interactions.update_task(self.current_file, action)
             elif command in ['list', 'lst', 'список']:
                 self.command_interactions.list_of_tasks(self.current_file)
+            elif command in ['list-done', 'fl', 'выполненные-задачи']:
+                self.command_interactions.list_of_done(self.current_file)
+            elif command in ['list-in-progress', 'ml', 'задачи-на-выполнение']:
+                self.command_interactions.list_of_marked(self.current_file)
+            elif command in ['list-todo', 'nml', 'задачи']:
+                self.command_interactions.list_of_not_marked(self.current_file)
 
             self.current_file = self.refresh(self.current_file)
