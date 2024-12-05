@@ -59,6 +59,6 @@ class Application:
             elif command in ['update', 'обновить']:
                 self.command_interactions.update_task(self.current_file, action)
             elif command in ['list', 'lst', 'список']:
-                self.command_interactions.show_tasks(self.current_file)
+                self.command_interactions.list_of_tasks(self.current_file)
 
             self.current_file = self.refresh(self.current_file)
