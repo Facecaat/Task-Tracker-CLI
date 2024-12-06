@@ -1,5 +1,7 @@
-import manager
 from json import load, dump
+
+import manager
+from exceptions import UnknownCommand
 
 
 
@@ -30,7 +32,7 @@ class Application:
 
     def choose_file(self):
         while True:
-            decision = input("Do you want to create/open a tracker?: ")
+            decision = input("Do you want to create/open/exit a tracker?: ")
             if decision == 'exit':
                 self.messages.stop_run()
                 break
@@ -47,24 +49,33 @@ class Application:
         self.command_interactions = manager.CommandInteractions()
         command, *action = "", ""
         while command != "exit":
-            command, *action = input("task-cli ").split()
-            if command in ['add', 'добавить']:
-                self.command_interactions.create_task(self.current_file, action)
-            elif command in ['del', 'удалить']:
-                self.command_interactions.delete_task(self.current_file, action)
-            elif command in ['pmark', 'mark-in-progress', 'пометить-на-выполнение']:
-                self.command_interactions.pmark_task(self.current_file, action)
-            elif command in ['dmark', 'mark-done', 'задача-выполнена']:
-                self.command_interactions.dmark_task(self.current_file, action)
-            elif command in ['update', 'обновить']:
-                self.command_interactions.update_task(self.current_file, action)
-            elif command in ['list', 'lst', 'список']:
-                self.command_interactions.list_of_tasks(self.current_file)
-            elif command in ['list-done', 'fl', 'выполненные-задачи']:
-                self.command_interactions.list_of_done(self.current_file)
-            elif command in ['list-in-progress', 'ml', 'задачи-на-выполнение']:
-                self.command_interactions.list_of_marked(self.current_file)
-            elif command in ['list-todo', 'nml', 'задачи']:
-                self.command_interactions.list_of_not_marked(self.current_file)
+            try:
+                command, *action = input("task-cli ").split()
+                if command in ['add', 'добавить']:
+                    self.command_interactions.create_task(self.current_file, action)
+                elif command in ['del', 'удалить']:
+                    self.command_interactions.delete_task(self.current_file, action)
+                elif command in ['pmark', 'mark-in-progress', 'пометить-на-выполнение']:
+                    self.command_interactions.pmark_task(self.current_file, action)
+                elif command in ['dmark', 'mark-done', 'задача-выполнена']:
+                    self.command_interactions.dmark_task(self.current_file, action)
+                elif command in ['update', 'обновить']:
+                    self.command_interactions.update_task(self.current_file, action)
+                elif command in ['list', 'lst', 'список']:
+                    self.command_interactions.list_of_tasks(self.current_file)
+                elif command in ['list-done', 'fl', 'выполненные-задачи']:
+                    self.command_interactions.list_of_done(self.current_file)
+                elif command in ['list-in-progress', 'ml', 'задачи-на-выполнение']:
+                    self.command_interactions.list_of_marked(self.current_file)
+                elif command in ['list-todo', 'nml', 'задачи']:
+                    self.command_interactions.list_of_not_marked(self.current_file)
+                elif command in ['commands']:
+                    print(self.command_interactions.commands())
+                else:
+                    raise UnknownCommand
+            except UnknownCommand as e:
+                print(e.message)
+
+
 
             self.current_file = self.refresh(self.current_file)

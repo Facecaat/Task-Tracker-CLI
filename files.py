@@ -1,5 +1,5 @@
 from json import load, dump
-from exceptions import FileDoesNotExist
+from exceptions import FileDoesNotExist, FileAlreadyExist
 import os
 
 
@@ -14,9 +14,21 @@ class PersonalTaskTracker:
         self.filename = filename
 
     def create_file(self, filename):
-        self.filename = f"{filename}.json"
-        with open(self.filename, 'w', encoding='utf-8') as file:
-            dump(self.file_structure, file, indent=3, ensure_ascii=False)
+        while True:
+            try:
+                self.filename = f"{filename}.json"
+                if not os.path.exists(self.filename):
+                    with open(self.filename, 'w', encoding='utf-8') as file:
+                        dump(self.file_structure, file, indent=3, ensure_ascii=False)
+                        print('Task-tracker has been successfully created!')
+                        break
+                else:
+                    raise FileAlreadyExist
+            except FileAlreadyExist as e:
+                print(e.message)
+                filename = input("Write file name you want to create: ")
+
+
 
     def open_file(self, filename):
         while True:
@@ -24,7 +36,7 @@ class PersonalTaskTracker:
                 self.filename = f"{filename}.json"
                 if os.path.exists(self.filename):
                     with open(self.filename, 'r', encoding='utf-8') as file:
-                        print(f'{self.filename.strip(".json")} successfully opened!')
+                        print(f'{self.filename.strip(".json")} has been successfully opened!')
                         return self.filename
                 else:
                     raise FileDoesNotExist
