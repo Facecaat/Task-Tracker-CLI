@@ -1,4 +1,4 @@
-from json import load, dump
+from json import dump
 from exceptions import FileDoesNotExist, FileAlreadyExist
 import os
 

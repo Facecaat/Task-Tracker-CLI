@@ -1,31 +1,24 @@
 from json import load, dump
-
-import manager
 from exceptions import UnknownCommand
 
 
 
 class Application:
-    def __init__(self, personal_task_tracker, messages_manager):
+    def __init__(self, personal_task_tracker, command_interactions):
         self.personal_task_tracker = personal_task_tracker
-        self.messages = messages_manager
+        self.command_interactions = command_interactions
 
 
     def refresh(self, filename):
-        current_id = 1
+        def update_ids(category):
+            for index, value in enumerate(category):
+                value['id'] = index + 1
+
         with open(filename, 'r', encoding='utf-8') as file:
             file_structure = load(file)
-        for item in file_structure['NotMarked']:
-            item['id'] = current_id
-            current_id += 1
-        current_id = 1
-        for item in file_structure['Marked']:
-            item['id'] = current_id
-            current_id += 1
-        current_id = 1
-        for item in file_structure['Finished']:
-            item['id'] = current_id
-            current_id += 1
+        update_ids(file_structure['NotMarked'])
+        update_ids(file_structure['Marked'])
+        update_ids(file_structure['Finished'])
         with open(filename, 'w', encoding='utf-8') as file:
             dump(file_structure, file, indent=3, ensure_ascii=False)
         return filename
@@ -34,19 +27,18 @@ class Application:
         while True:
             decision = input("Do you want to create/open/exit a tracker?: ")
             if decision == 'exit':
-                self.messages.stop_run()
+                print("Program in finished")
                 break
             if decision == "create":
                 file_name = input("Write file name you want to create: ")
                 self.personal_task_tracker.create_file(file_name)
-
             elif decision == "open":
                 file_name = self.personal_task_tracker.open_file(input("Write file name you want to open: "))
                 self.run(file_name)
 
+
     def run(self, filename):
         self.current_file = filename
-        self.command_interactions = manager.CommandInteractions()
         command, *action = "", ""
         while command != "exit":
             try:
